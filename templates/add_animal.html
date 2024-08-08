@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Osobní portfolio programátora HoBiho." />
+    <meta name="keywords" content="portfolio, programátor, HoBi" />
+    <meta name="author" content="HoBi" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <title>Přidání zvířete</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1><span>LIPRA PORK</span>, a.s.</h1>
+            <small>Farma Libichov</small>
+        </div>
+        <!-- Navigace -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Domů</a></li>
+                <li><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
+                <li class="aktivni"><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
+                <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
+                <li><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
+                <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
+
+            </ul>
+        </nav>
+    </header>
+    <article>
+        <header>
+            <h1>Přidání prasničky</h1>
+        </header>
+        <section>
+            <form action="{{ url_for('add_animal') }}" method="POST">
+                <label for="kratke_ID">Kratke ID:</label>
+                <input type="text" id="kratke_ID" name="kratke_ID" required><br>
+
+                <label for="turnus">Turnus:</label>
+                <input type="text" id="turnus" name="turnus" required><br>
+
+                <label for="rok">Rok:</label>
+                <input type="number" id="rok" name="rok" required><br>
+
+                <label for="datum_vazeni">Datum Vazeni:</label>
+                <input type="datetime-local" id="datum_vazeni" name="datum_vazeni" required><br>
+
+                <label for="datum_narozeni">Datum Narozeni:</label>
+                <input type="datetime-local" id="datum_narozeni" name="datum_narozeni" required><br>
+
+                <label for="hmotnost">Hmotnost:</label>
+                <input type="number" id="hmotnost" name="hmotnost" required><br>
+
+                <input type="submit" value="Přidání zvířete">
+            </form>
+        </section>
+    </article>
+
+</body>
+
+</html>

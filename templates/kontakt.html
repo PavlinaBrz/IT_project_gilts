@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Osobní portfolio programátora HoBiho." />
+    <meta name="keywords" content="portfolio, programátor, HoBi" />
+    <meta name="author" content="HoBi" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <title>Domovská stránka</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1><span>LIPRA PORK</span>, a.s.</h1>
+            <small>Farma Libichov</small>
+        </div>
+        <!-- Navigace -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Domů</a></li>
+                <li><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
+                <li><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
+                <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
+                <li class="aktivni"><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
+                <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <header>
+            <h1>Kontakt</h1>
+        </header>
+
+        <section>
+
+        </section>
+    </article>
+
+</body>
+</html>

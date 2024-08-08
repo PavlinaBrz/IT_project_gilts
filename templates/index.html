@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Osobní portfolio programátora HoBiho." />
+    <meta name="keywords" content="portfolio, programátor, HoBi" />
+    <meta name="author" content="HoBi" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <title>Domovská stránka</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1><span>LIPRA PORK</span>, a.s.</h1>
+            <small>Farma Libichov</small>
+        </div>
+        <!-- Navigace -->
+        <nav>
+            <ul>
+                <li class="aktivni"><a href="{{ url_for('index') }}">Domů</a></li>
+                <li ><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
+                <li><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
+                <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
+                <li><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
+                <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <header>
+            <h1>Interní systém pro evidenci hmotnosti prasniček</h1>
+        </header>
+
+        <section>
+            <p class="tlacitko-odstavec">
+                <a href="reference.html" class="reference-tlacitko">Moje reference</a>
+            </p>
+            <div class="cistic"></div>
+        </section>
+    </article>
+    <footer>
+        Vytvořila &copy;Pavlína Brzobohatá
+    </footer>
+</body>
+</html>

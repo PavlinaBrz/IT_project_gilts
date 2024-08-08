@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Osobní portfolio programátora HoBiho." />
+    <meta name="keywords" content="portfolio, programátor, HoBi" />
+    <meta name="author" content="HoBi" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <title>Domovská stránka</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1><span>LIPRA PORK</span>, a.s.</h1>
+            <small>Farma Libichov</small>
+        </div>
+        <!-- Navigace -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Domů</a></li>
+                <li><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
+                <li><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
+                <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
+                <li><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
+                <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+      <header>
+          <h1>Login</h1>
+      </header>
+
+      <section>
+        <form method="post" action="{{ url_for('login') }}">
+          {{ form.hidden_tag() }}
+          <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+          </p>
+          <p>{{ form.submit() }}</p>
+        </form>
+
+        <!-- Přidání tlačítka pro registraci -->
+        <p>Nejste registrován? <a href="{{ url_for('register') }}">Registrace zde</a></p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <p><strong>{{ category }}:</strong> {{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </section>
+    </article>
+  </body>
+</html>

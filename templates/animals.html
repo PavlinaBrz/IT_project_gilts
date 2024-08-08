@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Osobní portfolio programátora HoBiho." />
+    <meta name="keywords" content="portfolio, programátor, HoBi" />
+    <meta name="author" content="HoBi" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <title>Přidání zvířete</title>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <h1><span>LIPRA PORK</span>, a.s.</h1>
+            <small>Farma Libichov</small>
+        </div>
+        <!-- Navigace -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">Domů</a></li>
+                <li class="aktivni"><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
+                <li><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
+                <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
+                <li><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
+                <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <article>
+        <header>
+            <h1>Evidence prasniček</h1>
+        </header>
+
+    <section>
+        <table border="1">
+            <tr>
+                <th>Krátké ID</th>
+                <th>Turnus</th>
+                <th>Rok</th>
+                <th>Interní ID</th>
+                <th>ID</th>
+                <th>Datum narození</th>
+                <th>Datum vážení</th>
+                <th>Týden vážení</th>
+                <th>Hmotnost</th>
+                <th>Datum měření - špek</th>
+                <th>Týden měření - špek</th>
+                <th>Výška špeku</th>
+                <th>Říje</th>
+                <th>Úprava zvířete</th>
+            </tr>
+            {% for animal in animals %}
+            <tr>
+                <td>{{ animal.kratke_ID }}</td>
+                <td>{{ animal.turnus }}</td>
+                <td>{{ animal.rok }}</td>
+                <td>{{ animal.interni_ID }}</td>
+                <td>{{ animal.id }}</td>
+                <td>{{ animal.datum_narozeni }}</td>
+                <td>{{ animal.datum_vazeni }}</td>
+                <td>{{ animal.tyden_vazeni }}</td>
+                <td>{{ animal.hmotnost }}</td>
+                <td>{{ animal.datum_spek }}</td>
+                <td>{{ animal.tyden_spek }}</td>
+                <td>{{ animal.spek }}</td>
+                <td>{{ animal.rije }}</td>
+                <td><a href="{{ url_for('edit_animal', kratke_ID=animal.kratke_ID) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+    </article>
+
+</body>
+</html>
