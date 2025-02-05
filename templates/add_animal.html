@@ -1,61 +1,237 @@
 <!DOCTYPE html>
 <html lang="cs-cz">
 <head>
+    <!--
+      add_animal.html
+      ----------------
+      Tato šablona umožňuje uživateli (po přihlášení) přidat nový záznam zvířete (prasničky).
+      Využívá WTForm `AnimalForm` z forms.py. Každé pole formuláře se rendruje
+      voláním např. \{\{ form.kratke_ID(...) }\}\ a je obaleno do Bootstrap CSS tříd.
+
+      Důležité prvky:
+        - form.hidden_tag() zahrnuje CSRF token pro bezpečnost
+        - Vše se odešle metodou POST na endpoint /add_animal
+        - Při úspěchu se provede redirect zpět na /animals
+    -->
     <meta charset="UTF-8">
-    <meta name="description" content="Osobní portfolio programátora HoBiho." />
-    <meta name="keywords" content="portfolio, programátor, HoBi" />
-    <meta name="author" content="HoBi" />
+    <meta name="description" content="Přidání zvířete" />
+    <meta name="keywords" content="prasničky, přidání" />
+    <meta name="author" content="Pavlína Brzobohatá" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Přidání zvířete</title>
 </head>
 <body>
     <header>
-        <div id="logo">
-            <h1><span>LIPRA PORK</span>, a.s.</h1>
-            <small>Farma Libichov</small>
-        </div>
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ url_for('index') }}">LIPRA PORK</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
         <!-- Navigace -->
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('index') }}">Domů</a></li>
-                <li><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
-                <li class="aktivni"><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
-                <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
-                <li><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
-                <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
-
-            </ul>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('index') }}">Domů</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('animals') }}">Náhled evidence</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ url_for('add_animal') }}">Přidání zvířete</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('growth_curve') }}">Růstová křivka</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="kontakt.html">Kontakt</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Odhlášení</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
-    <article>
-        <header>
+
+    <main class="container mt-4">
             <h1>Přidání prasničky</h1>
-        </header>
-        <section>
+            <!--
+              Formulář odesílá data metodou POST na /add_animal.
+              Pomocí \{\{ form.hidden_tag() }\}\ se vkládá CSRF token.
+            -->
             <form action="{{ url_for('add_animal') }}" method="POST">
-                <label for="kratke_ID">Kratke ID:</label>
-                <input type="text" id="kratke_ID" name="kratke_ID" required><br>
+                {{ form.hidden_tag() }}
 
-                <label for="turnus">Turnus:</label>
-                <input type="text" id="turnus" name="turnus" required><br>
+                <!--
+                  Vzor pro jedno pole:
+                  1) Vypíšeme label (třeba "Krátké ID")
+                  2) Vypíšeme samotný input:
+                     {{ form.kratke_ID(class="form-control", required=True) }}
+                  3) Vypíšeme chyby (errors) z validace
+                -->
+                <!-- kratke_ID -->
+                <div class="mb-3">
+                    {{ form.kratke_ID.label(class="form-label") }}
+                    {{ form.kratke_ID(class="form-control", id="kratke_ID", required=True) }}
+                    {% for error in form.kratke_ID.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+               <!-- Datum vážení I -->
+                <div class="mb-3">
+                    {{ form.datum_vazeni_I.label(class="form-label") }}
+                    {{ form.datum_vazeni_I(class="form-control", id="datum_vazeni_I") }}
+                    {% for error in form.datum_vazeni_I.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
 
-                <label for="rok">Rok:</label>
-                <input type="number" id="rok" name="rok" required><br>
+                <!-- Týden vážení I -->
+                <div class="mb-3">
+                    {{ form.tyden_vazeni_I.label(class="form-label") }}
+                    {{ form.tyden_vazeni_I(class="form-control", id="tyden_vazeni_I") }}
+                    {% for error in form.tyden_vazeni_I.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
 
-                <label for="datum_vazeni">Datum Vazeni:</label>
-                <input type="datetime-local" id="datum_vazeni" name="datum_vazeni" required><br>
-
-                <label for="datum_narozeni">Datum Narozeni:</label>
-                <input type="datetime-local" id="datum_narozeni" name="datum_narozeni" required><br>
-
-                <label for="hmotnost">Hmotnost:</label>
-                <input type="number" id="hmotnost" name="hmotnost" required><br>
-
-                <input type="submit" value="Přidání zvířete">
+                <!-- Hmotnost I -->
+                <div class="mb-3">
+                    {{ form.hmotnost_I.label(class="form-label") }}
+                    {{ form.hmotnost_I(class="form-control", id="hmotnost_I") }}
+                    {% for error in form.hmotnost_I.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Datum vážení I -->
+                <div class="mb-3">
+                    {{ form.datum_vazeni_II.label(class="form-label") }}
+                    {{ form.datum_vazeni_II(class="form-control", id="datum_vazeni_II") }}
+                    {% for error in form.datum_vazeni_II.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Týden vážení II -->
+                <div class="mb-3">
+                    {{ form.tyden_vazeni_II.label(class="form-label") }}
+                    {{ form.tyden_vazeni_II(class="form-control", id="tyden_vazeni_II") }}
+                    {% for error in form.tyden_vazeni_II.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Hmotnost II -->
+                <div class="mb-3">
+                    {{ form.hmotnost_II.label(class="form-label") }}
+                    {{ form.hmotnost_II(class="form-control", id="hmotnost_II") }}
+                    {% for error in form.hmotnost_II.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Datum vážení III -->
+                <div class="mb-3">
+                    {{ form.datum_vazeni_III.label(class="form-label") }}
+                    {{ form.datum_vazeni_III(class="form-control", id="datum_vazeni_III") }}
+                    {% for error in form.datum_vazeni_III.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Týden vážení III -->
+                <div class="mb-3">
+                    {{ form.tyden_vazeni_III.label(class="form-label") }}
+                    {{ form.tyden_vazeni_III(class="form-control", id="tyden_vazeni_III") }}
+                    {% for error in form.tyden_vazeni_III.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Hmotnost III -->
+                <div class="mb-3">
+                    {{ form.hmotnost_III.label(class="form-label") }}
+                    {{ form.hmotnost_III(class="form-control", id="hmotnost_III") }}
+                    {% for error in form.hmotnost_III.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Turnus -->
+                <div class="mb-3">
+                    {{ form.turnus.label(class="form-label") }}
+                    {{ form.turnus(class="form-control", id="turnus") }}
+                    {% for error in form.turnus.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Rok -->
+                <div class="mb-3">
+                    {{ form.rok.label(class="form-label") }}
+                    {{ form.rok(class="form-control", id="rok") }}
+                    {% for error in form.rok.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Interní ID -->
+                <div class="mb-3">
+                    {{ form.interni_ID.label(class="form-label") }}
+                    {{ form.interni_ID(class="form-control", id="interni_ID") }}
+                    {% for error in form.interni_ID.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- ID -->
+                <div class="mb-3">
+                    {{ form.ID.label(class="form-label") }}
+                    {{ form.ID(class="form-control", id="ID") }}
+                    {% for error in form.ID.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Datum narození -->
+                <div class="mb-3">
+                    {{ form.datum_narozeni.label(class="form-label") }}
+                    {{ form.datum_narozeni(class="form-control", id="datum_narozeni") }}
+                    {% for error in form.datum_narozeni.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Datum špek -->
+                <div class="mb-3">
+                    {{ form.datum_spek.label(class="form-label") }}
+                    {{ form.datum_spek(class="form-control", id="datum_spek") }}
+                    {% for error in form.datum_spek.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Týden špek -->
+                <div class="mb-3">
+                    {{ form.tyden_spek.label(class="form-label") }}
+                    {{ form.tyden_spek(class="form-control", id="tyden_spek") }}
+                    {% for error in form.tyden_spek.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Špek -->
+                <div class="mb-3">
+                    {{ form.spek.label(class="form-label") }}
+                    {{ form.spek(class="form-control", id="spek") }}
+                    {% for error in form.spek.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Říje -->
+                <div class="mb-3">
+                    {{ form.rije.label(class="form-label") }}
+                    {{ form.rije(class="form-control", id="rije") }}
+                    {% for error in form.rije.errors %}
+                        <div class="error">[{{ error }}]</div>
+                    {% endfor %}
+                </div>
+                <!-- Tlačítko pro odeslání formuláře -->
+                <button type="submit" class="btn btn-primary">Přidat zvíře</button>
             </form>
-        </section>
-    </article>
+    </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

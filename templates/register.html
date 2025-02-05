@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="cs-cz">
 <head>
+    <!--
+      register.html
+      -------------
+      Tato šablona poskytuje formulář pro vytvoření nového uživatele (registraci).
+      Používá WTForm 'RegistrationForm' (z forms.py), který obsahuje pole
+      'username' a 'password'.
+
+      Po úspěšné registraci se zobrazí flash zpráva a přesměruje se na /login.
+    -->
     <meta charset="UTF-8">
     <meta name="description" content="Osobní portfolio programátora HoBiho." />
     <meta name="keywords" content="portfolio, programátor, HoBi" />
     <meta name="author" content="HoBi" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Registrace</title>
 </head>
 <body>
@@ -14,16 +24,19 @@
             <h1><span>LIPRA PORK</span>, a.s.</h1>
             <small>Farma Libichov</small>
         </div>
-        <!-- Navigace -->
+        <!-- Hlavní navigace -->
         <nav>
             <ul>
+                <!--
+                  Zde jsou odkazy do dalších částí aplikace
+                  (Domů, Náhled evidence, Přidání zvířete, atd.).
+                -->
                 <li><a href="{{ url_for('index') }}">Domů</a></li>
                 <li><a href="{{ url_for('animals') }}">Náhled evidence</a></li>
                 <li><a href="{{ url_for('add_animal') }}">Přidání zvířete</a></li>
                 <li><a href="{{ url_for('growth_curve') }}">Růstová křivka</a></li>
-                <li><a class="kontakt-tlacitko" href='kontakt.html'>Kontakt</a></li>
+                <li><a class="kontakt-tlacitko" href="kontakt.html">Kontakt</a></li>
                 <li><a href="{{ url_for('logout') }}">Odhlášení</a></li>
-
             </ul>
         </nav>
     </header>
@@ -34,6 +47,10 @@
         </header>
 
         <section>
+            <!--
+              Zde se zobrazují flash zprávy (např. "Username already exists" nebo "Registration successful!")
+              Případně i jiné, pokud je aplikace pošle.
+            -->
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
                 <ul class="flashes">
@@ -44,8 +61,16 @@
               {% endif %}
             {% endwith %}
 
+            <!--
+              Formulář pro registraci:
+              - Odesílá se na /register (POST)
+              - Využívá hidden_tag() pro CSRF token
+              - Obsahuje pole 'username' a 'password'
+            -->
             <form method="POST" action="{{ url_for('register') }}">
                 {{ form.hidden_tag() }}
+
+                <!-- Username pole -->
                 <p>
                     {{ form.username.label }}<br>
                     {{ form.username(size=32) }}<br>
@@ -53,6 +78,8 @@
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+
+                <!-- Password pole -->
                 <p>
                     {{ form.password.label }}<br>
                     {{ form.password(size=32) }}<br>
@@ -60,8 +87,15 @@
                         <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+
+                <!-- Tlačítko pro odeslání -->
                 <p><input type="submit" value="Registrace"></p>
             </form>
+
+            <!--
+              Odkaz pro uživatele, kteří už účet mají.
+              Přesměruje na /login
+            -->
             <p>Máte již účet? <a href="{{ url_for('login') }}">Přihlašte se zde</a></p>
         </section>
     </article>
